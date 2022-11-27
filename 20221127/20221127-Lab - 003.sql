@@ -3,8 +3,12 @@ use `order-directory`;
 
 /*3)	Display the total number of customers based on gender who have placed orders of worth at least Rs.3000.*/
 
-select * from `order`
-;
+select c.Cus_Gender, COUNT(o.Cus_ID) As CountCustomer
+from `order` o
+INNER JOIN (select pricing_id, SUM(SUPP_PRICE) As tPrice
+from supplier_pricing GROUP BY pricing_id HAVING tPrice >= 3000) sp ON sp.pricing_id = o.pricing_id
+INNER JOIN Customer c ON c.Cus_ID = o.Cus_ID
+GROUP BY C.Cus_Gender;
 
 
 /* 4)	Display all the orders along with product name ordered by a customer having Customer_Id=2 */
